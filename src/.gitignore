@@ -1,0 +1,25 @@
+# Dependencies — Vercel installs these itself. NEVER commit node_modules.
+/node_modules
+
+# Next.js build output — generated on Vercel at build time.
+/.next/
+/out/
+
+# Production builds
+/build
+
+# Environment variables (secrets — DATABASE_URL, ADMIN_SECRET, etc.)
+.env
+.env*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
