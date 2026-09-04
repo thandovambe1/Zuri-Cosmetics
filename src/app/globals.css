@@ -1,0 +1,216 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* ── Zuri Cosmetics — Soft Luxury Pastels ── */
+  --color-cream: #faf5ef;
+  --color-ivory: #fffdf9;
+  --color-blush-50: #fdf6f3;
+  --color-blush-100: #f9ece8;
+  --color-blush-200: #f3dcd8;
+  --color-blush-300: #eac4c2;
+  --color-rose: #c98a8f;
+  --color-rose-deep: #ad6a75;
+  --color-plum: #5c4453;
+  --color-plum-deep: #43303d;
+  --color-ink: #4a3f49;
+  --color-nude: #eddccb;
+  --color-nude-deep: #d3ab8b;
+  --color-lavender: #e6def2;
+  --color-lavender-deep: #a58fc9;
+  --color-mauve: #b79fb4;
+  --color-champagne: #f0e3cd;
+  --color-gold: #b98a44;
+  --color-gold-deep: #93702f;
+  --color-gold-light: #f6ead2;
+
+  --font-display: "Playfair Display", "Georgia", serif;
+  --font-sans: "Jost", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --shadow-soft: 0 10px 40px -12px rgb(92 68 83 / 0.16);
+  --shadow-lift: 0 24px 60px -20px rgb(92 68 83 / 0.28);
+  --shadow-glow: 0 8px 30px -8px rgb(185 138 68 / 0.45);
+
+  --radius-luxe: 1.4rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-blush-200);
+  color: var(--color-plum-deep);
+}
+
+@layer components {
+  .eyebrow {
+    @apply text-[0.7rem] font-medium uppercase tracking-[0.32em] text-gold;
+  }
+
+  /* Base button — pair with .btn-gold / .btn-plum / .btn-soft / .btn-outline */
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] transition-all duration-300 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-gold {
+    @apply bg-gradient-to-r from-gold to-gold-deep text-ivory shadow-glow hover:-translate-y-0.5 hover:shadow-[0_14px_38px_-10px_rgb(185_138_68/0.65)] active:translate-y-0;
+  }
+  .btn-plum {
+    @apply bg-plum text-blush-50 hover:-translate-y-0.5 hover:bg-plum-deep active:translate-y-0;
+  }
+  .btn-soft {
+    @apply bg-blush-100 text-plum hover:bg-blush-200 active:translate-y-0;
+  }
+  .btn-outline {
+    @apply border border-gold/60 bg-transparent text-plum hover:border-gold hover:bg-gold-light/40 active:translate-y-0;
+  }
+  .btn-ghost {
+    @apply text-plum hover:bg-blush-100 active:translate-y-0;
+  }
+
+  .card-luxe {
+    @apply rounded-[1.4rem] border border-blush-200/70 bg-ivory shadow-soft;
+  }
+
+  .input-luxe {
+    @apply w-full rounded-xl border border-blush-200 bg-ivory px-4 py-3 text-sm text-plum placeholder:text-mauve/60 transition-colors duration-200 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gold/40 to-transparent;
+  }
+}
+
+/* ── Luxury micro-interactions ─────────────────────────────────────── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.anim-fade-up {
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-fade-in {
+  animation: fade-in 1s ease both;
+}
+.anim-float {
+  animation: float-slow 7s ease-in-out infinite;
+}
+.anim-pop {
+  animation: pop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Scroll-reveal (driven by <Reveal /> component) */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .anim-fade-up,
+  .anim-fade-in,
+  .anim-float {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Product image hover zoom */
+.img-zoom {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .img-zoom {
+  transform: scale(1.06);
+}
+
+/* Thin elegant scrollbars */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-blush-50);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-champagne);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
