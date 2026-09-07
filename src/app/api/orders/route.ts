@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
+import { ensureDatabase } from "@/db/bootstrap";
 import { eq, inArray, sql } from "drizzle-orm";
 import { siteConfig } from "@/lib/config";
 import { isEmail, toNumber } from "@/lib/utils";
@@ -32,6 +33,7 @@ async function makeOrderNumber() {
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const body = (await request.json()) as Record<string, unknown>;
 
     const firstName = clean(body.firstName, 80);
