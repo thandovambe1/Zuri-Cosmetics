@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { inquiries } from "@/db/schema";
+import { ensureDatabase } from "@/db/bootstrap";
 import { isEmail } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const body = (await request.json()) as Record<string, unknown>;
     const name = (typeof body.name === "string" ? body.name : "").trim().slice(0, 120);
     const email = (typeof body.email === "string" ? body.email : "").trim().toLowerCase().slice(0, 160);
