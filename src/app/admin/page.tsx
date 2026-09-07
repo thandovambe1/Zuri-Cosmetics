@@ -10,6 +10,7 @@ import { adminPasswordIsDefault, isAdmin } from "@/lib/admin";
 import { getAllOrders, getAllProductsAdmin } from "@/lib/queries";
 import { db } from "@/db";
 import { reviews } from "@/db/schema";
+import { ensureDatabase } from "@/db/bootstrap";
 import { toNumber } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -24,6 +25,8 @@ export default async function AdminPage() {
   if (!authorized) {
     return <AdminLogin passwordIsDefault={adminPasswordIsDefault()} />;
   }
+
+  await ensureDatabase();
 
   const [allProducts, allOrders, pendingAndLive] = await Promise.all([
     getAllProductsAdmin(),
