@@ -39,12 +39,30 @@ const ABOUT_IMG2 = "/images/cat-lashes.jpg";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  /*
+    Categories & products are critical — if they genuinely fail, the error
+    surfaces to the branded error boundary (app/error.tsx) and is logged.
+    Reviews & tutorials are NON-critical: a failure there is logged
+    server-side but must never take the whole homepage down.
+  */
   const [categories, featured, bestSellers, reviews, tutorials] = await Promise.all([
     getCategories(),
     listProducts({ sort: "featured" }),
     listProducts({ sort: "best" }),
-    getHomeReviews(3),
-    getTutorials(),
+    getHomeReviews(3).catch((error) => {
+      console.error(
+        "[zuri] Non-critical: homepage reviews failed to load:",
+        error instanceof Error ? error.message : error
+      );
+      return [];
+    }),
+    getTutorials().catch((error) => {
+      console.error(
+        "[zuri] Non-critical: homepage tutorials failed to load:",
+        error instanceof Error ? error.message : error
+      );
+      return [];
+    }),
   ]);
 
   const featuredProducts = featured.filter((p) => p.featured).slice(0, 4);
