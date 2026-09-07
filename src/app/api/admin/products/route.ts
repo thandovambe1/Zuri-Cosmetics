@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { ensureDatabase } from "@/db/bootstrap";
 import { isAdmin } from "@/lib/admin";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +11,7 @@ export async function PATCH(request: Request) {
   if (!(await isAdmin())) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
+  await ensureDatabase();
   const body = (await request.json()) as Record<string, unknown>;
   const id = Number(body.id);
   if (!Number.isFinite(id)) {
