@@ -12,6 +12,7 @@ import {
   type ProductVariant,
 } from "@/db/schema";
 import { asc, desc, eq } from "drizzle-orm";
+import { ensureDatabase } from "@/db/bootstrap";
 import { toNumber } from "./utils";
 import { effectivePrice, type ShopProduct, type SortKey } from "./types";
 
@@ -53,6 +54,7 @@ function mapProduct(
 }
 
 async function loadAll(includeDrafts = false) {
+  await ensureDatabase();
   const [allProducts, allCategories, allVariants, allReviews] = await Promise.all([
     db.select().from(products),
     db.select().from(categories),
@@ -155,6 +157,7 @@ export async function listProducts(
 }
 
 export async function getCategories() {
+  await ensureDatabase();
   return db.select().from(categories).orderBy(asc(categories.sortOrder));
 }
 
@@ -179,6 +182,7 @@ export async function getRelated(product: ShopProduct, limit = 4) {
 }
 
 export async function getReviews(productId: number) {
+  await ensureDatabase();
   const rows = await db
     .select()
     .from(reviews)
@@ -227,14 +231,17 @@ export async function getHomeReviews(limit = 6): Promise<HomeReview[]> {
 }
 
 export async function getTutorials() {
+  await ensureDatabase();
   return db.select().from(tutorials).orderBy(asc(tutorials.sortOrder));
 }
 
 export async function getFaqs() {
+  await ensureDatabase();
   return db.select().from(faqs).orderBy(asc(faqs.sortOrder));
 }
 
 export async function getOrderByNumber(orderNumber: string) {
+  await ensureDatabase();
   const [order] = await db
     .select()
     .from(orders)
@@ -249,6 +256,7 @@ export async function getOrderByNumber(orderNumber: string) {
 }
 
 export async function getAllOrders() {
+  await ensureDatabase();
   return db.select().from(orders).orderBy(desc(orders.createdAt));
 }
 
