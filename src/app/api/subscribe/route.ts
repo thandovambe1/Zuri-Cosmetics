@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { subscribers } from "@/db/schema";
+import { ensureDatabase } from "@/db/bootstrap";
 import { eq } from "drizzle-orm";
 import { isEmail } from "@/lib/utils";
 
@@ -8,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const body = (await request.json()) as { email?: unknown };
     const email = (typeof body.email === "string" ? body.email : "").trim().toLowerCase().slice(0, 160);
     if (!isEmail(email)) {
