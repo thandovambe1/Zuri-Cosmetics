@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { reviews } from "@/db/schema";
+import { ensureDatabase } from "@/db/bootstrap";
 import { eq } from "drizzle-orm";
 import { products } from "@/db/schema";
 
@@ -8,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const body = (await request.json()) as Record<string, unknown>;
     const productId = Number(body.productId);
     const authorName = (typeof body.name === "string" ? body.name : "").trim().slice(0, 80);
